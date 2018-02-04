@@ -4,7 +4,7 @@ A python 3.6 program for a fully autonomous fishing bot. In Alpha.
   It heavily depends Opencv to understand what is going on in your screen, doing template matching and color detection to individually track the little green rectangle, the little fish icon and the exclamation point in the mini game.
   I am not a experienced programmer, so don't expect a lot from this. The sole purpose of me posting this in GitHub is so someone can help me.
   
-#======================================================================================================================================#
+  
 
                           How to setup Stardew Valley for this to work and steps necessary to run the script:
 
