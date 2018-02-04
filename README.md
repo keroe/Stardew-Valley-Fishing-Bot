@@ -12,7 +12,7 @@ A python 3.6 program for a fully autonomous fishing bot. Work in progress.
   
 
                                                  How it works:
-                                             (the code is commented too)
+                                 (Comments in the code have every step explained)
 
 
 1: grabs what is on the screen with ImageGrab.
