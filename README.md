@@ -17,12 +17,10 @@ A python 3.6 program for a fully autonomous fishing bot. Work in progress.
 
 1: grabs what is on the screen with ImageGrab.
 
-2: runs the function 'process_img' (creates a little window with the region of interest, does template matching in this window to look for fish, finds the green rectangle by color [1]).
+2: runs the function 'process_img' (creates a little window with the region of interest, does template matching in this window to look for fish, finds the green rectangle by color).
 
 3: tries to find the exclamation point (exc_point) that shows that something got into the fishing pole. When it finds the exc_point it automactilly presses C so it always catch on time.
 
 4: waits for some time and tries to find a fish icon in the screen. If it finds it means it was "HIT", if not, it will throw the bait again and the loop restarts.
 
 5: if it was "HIT" (found fish) it will try to control to height of the green rectangle so it stays at the same height of the fish. However this works very poorly and it worked for me 1 time in 20~ tries, and only because the fish stayed motionless in his starting position.
-
-[1]: more of what it does commented in the code
