@@ -5,4 +5,4 @@ It heavily depends Opencv to understand what is going on in your screen, doing t
 
 ## How to help with data collecting:
 
-To colaborate collecting data for the future neural network, you just need download **save_data.py** and play the game with it on the background, then upload the _frames.npy_ and _training_data.npy_ to this GitHub or send to me at _ansetti7@gmail.com_. As I am still learning _machine learning_ I am probably doing something wrong, so it will take a while.
+To colaborate collecting data for the future neural network, you just need download **save_data.py** and play the game with it on the background, then upload the _frames.npy_ and _training_data.npy_ to this GitHub or send to me at _ansetti7@gmail.com_. As I am still learning how to do all of this, I am probably doing something wrong, so it will take a while.
