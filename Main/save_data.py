@@ -61,7 +61,8 @@ def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is 
         break
 
     if not region_detected:
-        print("No region")
+        #print("No region")
+        pass
 
     return region_detected, green_bar_region,lowestPoint
 
@@ -259,15 +260,16 @@ def main():
 
             data = [d_rect_fish, d_rect_floor, c_pressed] # example c pressed: [231, 456, 1]. c not pressed: [231, 456, 0]
 
-            print("R/Fish:\t", data[0], "R/Floor:\t", data[1], "C pressed:\t", data[2])
+            print("R/Fish:\t", data[0], "\tR/Floor:\t", data[1], "\tC pressed:\t", data[2])
 
             training_data.append(data)
 
             was_fishing = True
 
             #cv2.imshow('Complete',cv2.cvtColor(contour, cv2.COLOR_BGR2RGB))
-         if not fishing and was_fishing:
-            print(len(training_data))
+        if not fishing and was_fishing:
+            print("Training data size:\t", len(training_data))
+            print("Saving...")
             np.save(file_name, training_data)
             was_fishing = False
 
