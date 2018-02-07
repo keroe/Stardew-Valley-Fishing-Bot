@@ -13,7 +13,7 @@ First change the resolution to 1280x720. It only works in this resolution for no
                              
 1: grabs what is on the screen with ImageGrab.
 
-_needs to be updated just ignore all below this line_
+-------------------------------------_needs to be updated just ignore everything below this line_-------------------------------------
 
 2: runs the function 'process_img' (creates a little window with the region of interest, does template matching in this window to look for fish, finds the green rectangle by color).
 
