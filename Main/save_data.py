@@ -19,8 +19,7 @@ x = 105 # If I need to translate the areas of interest easily and equally
 y = 75
 
 
-file_name = 'training_data.npy'
-frame_file = 'frames.txt'
+file_name = 'Data\\training_data.npy'
 
 if os.path.isfile(file_name):
     print("Training file exists, loading previos data!")
@@ -29,6 +28,16 @@ if os.path.isfile(file_name):
 else:
     print("Training file does not exist, starting fresh!")
     training_data = []
+
+frame_file = 'Data\\frames.npy'
+
+if os.path.isfile(frame_file):
+    print("Frames file exists, loading previos data!")
+    frames = list(np.load(frame_file))
+
+else:
+    print("Frames file does not exist, starting fresh!")
+    frames = []
 '''
 if os.path.isfile(frame_file):
     print("Frames file exists, loading previos data!")
@@ -241,15 +250,18 @@ def main():
             #print("G-L:", lowest_point)
             #print("FLoor", floor_height)
             #print("R/Fish:\t", data[0], "R/Floor:\t", data[1], "C pressed:\t", data[2])
-            
+
         if not fishing and was_fishing:
+
+            frames.append(len(training_data))
+            np.save(frame_file, frames)
 
             print("Frames analysed:\t", len(training_data))
             print("Saving...")
             np.save(file_name, training_data)
             was_fishing = False
 
-        cv2.imshow('RGB Region',cv2.cvtColor(green_bar_window, cv2.COLOR_BGR2RGB))
+        #cv2.imshow('RGB Region',cv2.cvtColor(green_bar_window, cv2.COLOR_BGR2RGB))
               
 
         if cv2.waitKey(25) & 0xFF == ord('q'): # To close the windows
