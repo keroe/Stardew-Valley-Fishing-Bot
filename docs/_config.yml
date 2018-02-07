@@ -1,1 +1,3 @@
 theme: jekyll-theme-slate
+title: Stardew Fishing Bot With Neural Network!
+description: Please help collect data for the machine learning. Just download "save_data.py" and play the game with it on the background, then upload the "frames.npy" and "training_data.npy" to this GitHub or send to me at "ansetti7@gmail.com".
