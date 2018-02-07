@@ -24,6 +24,7 @@ file_name = 'training_data.npy'
 if os.path.isfile(file_name):
     print("File exists, loading previos data!")
     training_data = list(np.load(file_name))
+    #print(training_data)
 else:
     print("File does not exist, starting fresh!")
     training_data = []
@@ -32,7 +33,7 @@ else:
 def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is actually BGR because of Opencv, but I didn't bother changing all the names
     
     region_detected = False
-    lowestPoint = 460
+    floor_height = 460
 
     green_bar_region = img_rgb[y-5:470+y, 347+x:488+x]
 
@@ -53,7 +54,7 @@ def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is 
         
         #coords_list = [y1, y2, x1 + 55, x2 - 35]
         green_bar_region = img_rgb[y1 : y2, x1 + 55 : x2 - 35]
-        lowestPoint = y2
+        floor_height = y2
 
         #cv2.imshow("Green bar window", green_bar_region)
         region_detected = True
@@ -64,13 +65,13 @@ def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is 
         #print("No region")
         pass
 
-    return region_detected, green_bar_region,lowestPoint
+    return region_detected, green_bar_region, floor_height
 
 
-def fish(green_bar_win): #Fish: this looks pretty shitty. I really want to optimize it. What to change: only if it didn't match the fish at the first try it should try again. At the moment it is always trying 2 times and I think this is stupid and is slowing everything down.
-   
+def fish(green_bar_win): 
+
     fish_center_height = 400   #If there is no fish found in the image sets this as the height. 400 hundred is at the bottom of the mini-game because point (0, 0) is the top-left corner
-    fish_x_calibration = 0 #58
+    fish_x_calibration = 0     #58
 
     x = 105 # If I need to translate the areas of interest easily and equally
     y = 75
@@ -79,9 +80,6 @@ def fish(green_bar_win): #Fish: this looks pretty shitty. I really want to optim
 
     img_HSV = cv2.cvtColor(green_bar_win, cv2.COLOR_BGR2HSV)
     img_fish = cv2.inRange(img_HSV, lowerBound_fish, upperBound_fish)
-
-    #kernel
-    #dilate/ erode
 
     _, conts, hierarchy = cv2.findContours(img_fish, cv2.RETR_EXTERNAL , cv2.CHAIN_APPROX_SIMPLE)
 
@@ -103,34 +101,12 @@ def fish(green_bar_win): #Fish: this looks pretty shitty. I really want to optim
             break
 
     if not fish_detected:
-        print("No fishy")
+        print("No fish was detected, not saving this frame.")
 
     return fish_detected, fish_center_height, img_fish
 
 
 def process_img(img_rgb, green_bar_win):
-    '''
-
-    Draws over little window of the region of interest and finds everything of the green rectangle
-
-
-    See comments on each "section" to undestand what they do.   
-
-
-    Reminder to self: min Windows 10 window width: 120px
-
-
-    '''
-
-    #exclamation point ROI
-    #cv2.rectangle(img_rgb, (520+x, 155+y), (555+x,200+y), (0, 255, 0), 2)  # vertices: (520+x,200+y), (555+x,200+y), (555+x, 155+y), (520+x, 155+y)]])
-
-
-    #Green bar vision:
-    #green_bar_win = img_rgb[y-5:470+y, 347+x:488+x] # This is where we will draw what the script is identifying.
-
-    #vertices = np.array([[(405+x,5+y), (405+x,455+y), (430+x,455+y), (430+x, 5+y)]])
-    #cv2.drawContours(img_rgb, vertices, -1, (0,255,0), 2)
 
     img_YCrCb = cv2.cvtColor(green_bar_win, cv2.COLOR_BGR2YCrCb)  # chose this color scheme because ir seemed to be one of the few who worked. BGR2Lab also seemed to work.
     img_green = cv2.inRange(img_YCrCb, lowerBound_s1, upperBound_s1)
@@ -161,7 +137,7 @@ def process_img(img_rgb, green_bar_win):
     
     #Finding bottom-most/top-most points, then calculate center point:
     rect_center_heigth = 400  # Lowest point possible for the center of the rectangle if use. I think the number is wrong, needs measurement again.
-    highest_point_calibration = 350 # Don't let the center point be too low
+    lowest_point = 550
 
     if len(cnt_list) == 2: # if it find 2 rectangles (which happens when the fish is in the middle of the bar)
 
@@ -174,14 +150,10 @@ def process_img(img_rgb, green_bar_win):
         lowest_point = int(bottommost[1])
         highest_point = int(topmost[1])
 
-        if highest_point > highest_point_calibration: #Dont mark/consider the floor algae on the bar as center point. Maybe unnecessary as erode and area filter have been used to remove the noise made by those algaes.
-            highest_point = highest_point_calibration
-            highest_point = highest_point_calibration
-
         rect_center_heigth = int(np.round((lowest_point + highest_point)/2, 0))
 
-        #bot_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, highest_point), 1, (255, 255, 0), 4) # very useful to know where the bottom point is being found
-        #top_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, lowest_point), 1, (255, 255, 0), 4) # very useful to know where the top point is being found
+        #bot_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, lowest_point), 1, (255, 255, 0), 4) # very useful to know where the bottom point is being found
+        #top_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, highest_point), 1, (255, 255, 0), 4) # very useful to know where the top point is being found
         center_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, rect_center_heigth), 1, (255, 0, 255), 2) # Draws magenta point aroud center
 
     if len(cnt_list) == 1: # if it find only 1 rectangle. This means that the fish is not at the bar.
@@ -194,20 +166,17 @@ def process_img(img_rgb, green_bar_win):
         lowest_point = int(bottommost[1])
         highest_point = int(topmost[1])
 
-        if highest_point > highest_point_calibration: #Dont mark/consider the floor algae on the bar as center point. Maybe unnecessary as erode and area filter have been used to remove the noise made by those algaes.
-            highest_point = highest_point_calibration
-
         rect_center_heigth = int(np.round((lowest_point + highest_point)/2, 0))
 
-        #bot_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, highest_point), 1, (255, 255, 0), 4) # very useful to know where the bottom point is being found
-        #top_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, lowest_point), 1, (255, 255, 0), 4) # very useful to know where the top point is being found
+        #bot_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, lowest_point), 1, (255, 255, 0), 4) # very useful to know where the bottom point is being found
+        #top_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, highest_point), 1, (255, 255, 0), 4) # very useful to know where the top point is being found
         center_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, rect_center_heigth), 1, (255, 0, 255), 2) # Draws magenta point aroud center
     
     #================================================================================================================================================================================================
 
     #return 'img_green' to see what the script is seeing when finding contours obs: will give error because the window is too small for windows to display
 
-    return img_rgb, rect_center_heigth
+    return img_rgb, rect_center_heigth, lowest_point
 
 
 def keys_to_output(keys):
@@ -220,10 +189,6 @@ def keys_to_output(keys):
 
 
 def main():
-
-    exc_template = cv2.imread('Images\\exclamation point.png')
-    exc_template_gray = cv2.cvtColor(exc_template, cv2.COLOR_BGR2GRAY)
-    we, he = exc_template_gray.shape[::-1]
 
     region_template = cv2.imread('Images\\fishing region 3.png')
     region_template_gray = cv2.cvtColor(region_template, cv2.COLOR_BGR2GRAY)
@@ -247,12 +212,12 @@ def main():
 
         if fishing:
 
-            contour, green_bar_height = process_img(screen, green_bar_window) # process every frame (would be nice if it could process every 5 or so frames, so the process becomes faster).
+            contour, green_bar_height, lowest_point = process_img(screen, green_bar_window) # process every frame (would be nice if it could process every 5 or so frames, so the process becomes faster).
             
             fish_detected, fish_height, searching_nemo = fish(green_bar_window)
 
             d_rect_fish = fish_height - green_bar_height # if result is + : fish is below the green bar, if result is - : fish is above the green bar
-            d_rect_floor = floor_height - green_bar_height # always +
+            d_rect_floor = floor_height - lowest_point # always +
 
             keys = key_check()
 
@@ -260,15 +225,18 @@ def main():
 
             data = [d_rect_fish, d_rect_floor, c_pressed] # example c pressed: [231, 456, 1]. c not pressed: [231, 456, 0]
 
-            print("R/Fish:\t", data[0], "\tR/Floor:\t", data[1], "\tC pressed:\t", data[2])
+            #print("G-L:", lowest_point)
+            #print("FLoor", floor_height)
+
+            #print("R/Fish:\t", data[0], "R/Floor:\t", data[1], "C pressed:\t", data[2])
 
             training_data.append(data)
 
             was_fishing = True
 
-            #cv2.imshow('Complete',cv2.cvtColor(contour, cv2.COLOR_BGR2RGB))
         if not fishing and was_fishing:
-            print("Training data size:\t", len(training_data))
+
+            print("Frames analysed:\t", len(training_data))
             print("Saving...")
             np.save(file_name, training_data)
             was_fishing = False
