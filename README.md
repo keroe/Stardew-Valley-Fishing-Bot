@@ -7,8 +7,8 @@ It heavily depends Opencv to understand what is going on in your screen, doing t
                       
 First change the resolution to 1280x720. It only works in this resolution for now so my computer can handle it. This script does noy work if the game is on the background or minimized. Now run the "Main.py" code, move your character to the margin of any water-body, press "c" with the fishing rod selected and enjoy.
 
-                                             How it works:
-                             (Comments in the code have every step explained)
+                                                      How it works:
+                                      (Comments in the code have every step explained)
                              
 1: grabs what is on the screen with ImageGrab.
 
