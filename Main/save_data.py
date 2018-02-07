@@ -20,15 +20,24 @@ y = 75
 
 
 file_name = 'training_data.npy'
+frame_file = 'frames.txt'
 
 if os.path.isfile(file_name):
-    print("File exists, loading previos data!")
+    print("Training file exists, loading previos data!")
     training_data = list(np.load(file_name))
-    #print(training_data)
-else:
-    print("File does not exist, starting fresh!")
-    training_data = []
 
+else:
+    print("Training file does not exist, starting fresh!")
+    training_data = []
+'''
+if os.path.isfile(frame_file):
+    print("Frames file exists, loading previos data!")
+    frames  = open(frame_file, a)
+
+else:
+    print("Frames file does not exist, starting fresh!")
+    frames = 
+'''
 
 def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is actually BGR because of Opencv, but I didn't bother changing all the names
     
@@ -93,7 +102,7 @@ def fish(green_bar_win):
             fish_center_point = (int(x + fish_x_calibration), int(y))
             fish_center_height = fish_center_point[1]
             radius = int(radius)
-            fish_center_point = cv2.circle(green_bar_win, fish_center_point, 15, (100, 0, 255), 2)
+            #fish_center_point = cv2.circle(green_bar_win, fish_center_point, 15, (100, 0, 255), 2)
 
             fish_detected = True
 
@@ -154,7 +163,7 @@ def process_img(img_rgb, green_bar_win):
 
         #bot_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, lowest_point), 1, (255, 255, 0), 4) # very useful to know where the bottom point is being found
         #top_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, highest_point), 1, (255, 255, 0), 4) # very useful to know where the top point is being found
-        center_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, rect_center_heigth), 1, (255, 0, 255), 2) # Draws magenta point aroud center
+        #center_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, rect_center_heigth), 1, (255, 0, 255), 2) # Draws magenta point aroud center
 
     if len(cnt_list) == 1: # if it find only 1 rectangle. This means that the fish is not at the bar.
 
@@ -170,7 +179,7 @@ def process_img(img_rgb, green_bar_win):
 
         #bot_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, lowest_point), 1, (255, 255, 0), 4) # very useful to know where the bottom point is being found
         #top_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, highest_point), 1, (255, 255, 0), 4) # very useful to know where the top point is being found
-        center_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, rect_center_heigth), 1, (255, 0, 255), 2) # Draws magenta point aroud center
+        #center_point = cv2.circle(green_bar_win, (topmost[0] + x_center_calibration_value, rect_center_heigth), 1, (255, 0, 255), 2) # Draws magenta point aroud center
     
     #================================================================================================================================================================================================
 
