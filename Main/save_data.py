@@ -234,15 +234,14 @@ def main():
 
             data = [d_rect_fish, d_rect_floor, c_pressed] # example c pressed: [231, 456, 1]. c not pressed: [231, 456, 0]
 
-            #print("G-L:", lowest_point)
-            #print("FLoor", floor_height)
-
-            #print("R/Fish:\t", data[0], "R/Floor:\t", data[1], "C pressed:\t", data[2])
-
             training_data.append(data)
 
             was_fishing = True
 
+            #print("G-L:", lowest_point)
+            #print("FLoor", floor_height)
+            #print("R/Fish:\t", data[0], "R/Floor:\t", data[1], "C pressed:\t", data[2])
+            
         if not fishing and was_fishing:
 
             print("Frames analysed:\t", len(training_data))
