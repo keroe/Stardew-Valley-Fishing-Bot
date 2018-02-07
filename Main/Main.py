@@ -47,9 +47,9 @@ def exc_point(img_rgb, exc_template, w, h):  # the image format is actually BGR 
 '''
 
 def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is actually BGR because of Opencv, but I didn't bother changing all the names
-
+    
     region_detected = False
-    y_adjustment = 25  #Don't know why but whitout this it gets dislocatd upwards
+    lowestPoint = 460
 
     green_bar_region = img_rgb[y-5:470+y, 347+x:488+x]
 
@@ -57,7 +57,7 @@ def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is 
 
     res = cv2.matchTemplate(img_gray, region_template_gray, cv2.TM_CCOEFF_NORMED)
 
-    threshold = 0.7
+    threshold = 0.65
 
     loc = np.where( res >= threshold)
 
@@ -68,17 +68,19 @@ def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is 
 
         region_rect = cv2.rectangle(img_rgb, (x1, y1), (x2, y2), (0, 255,255), 2)
         
+        #coords_list = [y1, y2, x1 + 55, x2 - 35]
         green_bar_region = img_rgb[y1 : y2, x1 + 55 : x2 - 35]
-        
+        lowestPoint = y2
+
         #cv2.imshow("Green bar window", green_bar_region)
         region_detected = True
-        print("Region detected")
+        #print("Region detected")
         break
 
     if not region_detected:
         print("No region")
 
-    return region_detected, green_bar_region
+    return region_detected, green_bar_region,lowestPoint
 
 
 def fish(green_bar_win): #Fish: this looks pretty shitty. I really want to optimize it. What to change: only if it didn't match the fish at the first try it should try again. At the moment it is always trying 2 times and I think this is stupid and is slowing everything down.
@@ -113,7 +115,7 @@ def fish(green_bar_win): #Fish: this looks pretty shitty. I really want to optim
 
             fish_detected = True
 
-            print('Fishy') 
+            #print('Fishy') 
             break
 
     if not fish_detected:
@@ -146,9 +148,7 @@ def process_img(img_rgb, green_bar_win):
     #vertices = np.array([[(405+x,5+y), (405+x,455+y), (430+x,455+y), (430+x, 5+y)]])
     #cv2.drawContours(img_rgb, vertices, -1, (0,255,0), 2)
 
-    img_rgb_little = img_rgb[y-5:470+y, 347+x:488+x]
-
-    img_YCrCb = cv2.cvtColor(img_rgb_little, cv2.COLOR_BGR2YCrCb)  # chose this color scheme because ir seemed to be one of the few who worked. BGR2Lab also seemed to work.
+    img_YCrCb = cv2.cvtColor(green_bar_win, cv2.COLOR_BGR2YCrCb)  # chose this color scheme because ir seemed to be one of the few who worked. BGR2Lab also seemed to work.
     img_green = cv2.inRange(img_YCrCb, lowerBound_s1, upperBound_s1)
 
     kernel = np.ones((2, 2),np.uint8)
@@ -165,8 +165,7 @@ def process_img(img_rgb, green_bar_win):
         area = cv2.contourArea(cnt)
 
         #filter noise of those damn algaes
-        if area > 25:
-
+        if area > 200:
             x1, y1, w, h = cv2.boundingRect(cnt)
             x2 = x1 + w                           # (x1, y1) = top-left vertex
             y2 = y1 + h                           # (x2, y2) = bottom-right vertex
@@ -272,7 +271,7 @@ def main():
 
         last_time = time.time()
         
-        fishing_started, green_bar_window = fishing_region(screen, region_template_gray, wr, hr)
+        fishing_started, green_bar_window, floor_height = fishing_region(screen, region_template_gray, wr, hr)
 
         if fishing_started:
 
@@ -280,9 +279,16 @@ def main():
             
             fish_detected, fish_height, searching_nemo = fish(green_bar_window)
 
-            cv2.imshow('Complete',cv2.cvtColor(contour, cv2.COLOR_BGR2RGB))
+            d_rect_fish = fish_height - green_bar_height # if result is + : fish is below the green bar, if result is - : fish is above the green bar
+            d_rect_floor = floor_height - green_bar_height # always +
+            c_pressed = 1
 
-        cv2.imshow('RGB Region',cv2.cvtColor(green_bar_window, cv2.COLOR_BGR2RGB))        
+            data = [d_rect_fish, d_rect_floor, c_pressed] # example c pressed: [231, 456, 1]. c not pressed: [231, 456, 0]
+            print("R/Fish: ", data[0], "R/Floor", data[1])
+            #cv2.imshow('Complete',cv2.cvtColor(contour, cv2.COLOR_BGR2RGB))
+
+        cv2.imshow('RGB Region',cv2.cvtColor(green_bar_window, cv2.COLOR_BGR2RGB))
+              
 
         if cv2.waitKey(25) & 0xFF == ord('q'): # To close the windows
             cv2.destroyAllWindows()
