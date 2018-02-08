@@ -254,6 +254,7 @@ def main():
         if not fishing and was_fishing:
 
             frames.append(len(training_data))
+            frames = [x - y for x, y in zip(frames[1:], frames)] #maybe
             np.save(frame_file, frames)
 
             print("Frames analysed:\t", len(training_data))
