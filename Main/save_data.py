@@ -19,35 +19,6 @@ x = 105 # If I need to translate the areas of interest easily and equally
 y = 75
 
 
-file_name = 'Data\\training_data.npy'
-
-if os.path.isfile(file_name):
-    print("Training file exists, loading previos data!")
-    training_data = list(np.load(file_name))
-
-else:
-    print("Training file does not exist, starting fresh!")
-    training_data = []
-
-frame_file = 'Data\\frames.npy'
-
-if os.path.isfile(frame_file):
-    print("Frames file exists, loading previos data!")
-    frames = list(np.load(frame_file))
-
-else:
-    print("Frames file does not exist, starting fresh!")
-    frames = []
-'''
-if os.path.isfile(frame_file):
-    print("Frames file exists, loading previos data!")
-    frames  = open(frame_file, a)
-
-else:
-    print("Frames file does not exist, starting fresh!")
-    frames = 
-'''
-
 def fishing_region(img_rgb, region_template_gray, w, h):  # the image format is actually BGR because of Opencv, but I didn't bother changing all the names
     
     region_detected = False
@@ -208,6 +179,44 @@ def keys_to_output(keys):
 
 def main():
 
+
+    ###################################################################################################
+
+
+    upperBound_s1 = np.array([200, 150, 255])  # upper and lower bound for the color detection (the way I came up with to find the contour of the green rectangle)
+    lowerBound_s1 = np.array([130, 0, 85])
+
+    upperBound_fish = np.array([50, 255, 197])
+    lowerBound_fish = np.array([20, 215, 147])
+
+    x_center_calibration_value = 10 # Makes the x coordinate of the center of the fish and of the rectangle to be in the right place
+
+    x = 105 # If I need to translate the areas of interest easily and equally
+    y = 75
+
+
+    file_name = 'Data\\training_data.npy'
+
+    if os.path.isfile(file_name):
+        print("Training file exists, loading previos data!")
+        training_data = list(np.load(file_name))
+
+    else:
+        print("Training file does not exist, starting fresh!")
+        training_data = []
+
+    frame_file = 'Data\\frames.npy'
+
+    if os.path.isfile(frame_file):
+        print("Frames file exists, loading previos data!")
+        frames = list(np.load(frame_file))
+
+    else:
+        print("Frames file does not exist, starting fresh!")
+        frames = []
+
+    ###################################################################################################
+
     region_template = cv2.imread('Images\\fishing region 3.png')
     region_template_gray = cv2.cvtColor(region_template, cv2.COLOR_BGR2GRAY)
     wr, hr = region_template_gray.shape[::-1]
@@ -253,14 +262,31 @@ def main():
 
         if not fishing and was_fishing:
 
-            frames.append(len(training_data))
-            frames = [x - y for x, y in zip(frames[1:], frames)] #maybe
-            np.save(frame_file, frames)
+            if len(frames) == 0:
+                #print('list of frames is new')
+                frames.append(len(training_data))
+                #print(len(training_data))
+                print("Frames analysed:\t", len(training_data))
 
-            print("Frames analysed:\t", len(training_data))
-            print("Saving...")
-            np.save(file_name, training_data)
-            was_fishing = False
+                np.save(frame_file, frames)
+
+                #print(frames)
+                print("Saving...")
+                np.save(file_name, training_data)
+                was_fishing = False
+
+            else:
+                frame = len(training_data)-sum(frames)
+                frames.append(frame)
+                print("Frames analysed:\t", frames[-1])
+
+                np.save(frame_file, frames)
+
+                #print(frames)
+                #print(len(training_data))
+                print("Saving...")
+                np.save(file_name, training_data)
+                was_fishing = False
 
         #cv2.imshow('RGB Region',cv2.cvtColor(green_bar_window, cv2.COLOR_BGR2RGB))
               
@@ -269,4 +295,5 @@ def main():
             cv2.destroyAllWindows()
             break
 
-main()
+if __name__ == "__main__":
+    main()

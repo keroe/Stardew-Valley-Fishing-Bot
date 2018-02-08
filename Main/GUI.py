@@ -2,6 +2,7 @@ from PyQt4 import QtGui, QtCore
 import sys, os
 import shutil
 import numpy as np
+from save_data import main
 
 class Window(QtGui.QMainWindow):
 
@@ -11,13 +12,6 @@ class Window(QtGui.QMainWindow):
 		self.setGeometry(50, 50, 500, 300)
 		self.setWindowTitle("Stardew Valley Fishing Bot v0.1")
 		self.setWindowIcon(QtGui.QIcon('Images\\fish.png'))
-
-
-		saveAction = QtGui.QAction("&Save", self)
-		saveAction.setShortcut('Ctrl + S')
-		saveAction.setStatusTip('Saves the training data')
-		#saveAction.triggered.connect(self.save_data)
-
 
 		sendAction = QtGui.QAction('&Send data', self)
 		sendAction.setStatusTip('Automatically sends the training data and your score to the fantastic dev')
@@ -39,7 +33,6 @@ class Window(QtGui.QMainWindow):
 		mainMenu = self.menuBar()
 		fileMenu = mainMenu.addMenu("&File")
 		deleteMenu = mainMenu.addMenu('&Delete')
-		fileMenu.addAction(saveAction)
 		fileMenu.addAction(sendAction)
 		deleteMenu.addAction(delDataAction)
 		deleteMenu.addAction(delLastDataAction)
@@ -59,7 +52,6 @@ class Window(QtGui.QMainWindow):
 
 				training_data = list(np.load(file_name))
 				frames = list(np.load(frames_file))
-				frames = [x - y for x, y in zip(frames[1:], frames)] #dont need after new trainig data
 
 				before_score = sum(frames)
 
@@ -77,6 +69,7 @@ class Window(QtGui.QMainWindow):
 						file_path = os.path.join(data_folder_path, file)
 						print(file, ' removed')
 						os.remove(file_path)
+						QtGui.QMessageBox.information(self, "Success", 'All of your data was deleted...')
 				
 				else:
 
@@ -127,13 +120,23 @@ class Window(QtGui.QMainWindow):
 			sys.exit()
 
 
+	def start(self, func):
+		pass #main()
+
+
+	def stop(self, func):
+		pass 
+
+
 	def home(self):
 
-		btn = QtGui.QPushButton('Save and Quit', self)
-		btn.clicked.connect(self.close_application)
-		btn.resize(btn.sizeHint())
-		btn.move(422, 275)
+		startCollecting = QtGui.QPushButton('Start', self)
+		#startCollecting.clicked.connect(self.start_collecting)
+		startCollecting.resize(startCollecting.sizeHint())
+		startCollecting.move(0, 20)
 		self.show()
+
+
 
 
 def run():
