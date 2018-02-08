@@ -7,7 +7,7 @@ I am not a experienced programmer, so don't expect a lot from this. The sole pur
 
 ## How to help with data collecting:
 
-To colaborate collecting data for the future neural network, you just need download **save_data.py**, go to line 222 and put your game resolution in the bbox parenthesis using this format: (0, 0, x, y). After this, you can play the game with it running on the background. 
+To colaborate collecting data for the future neural network, you just need download **save_data.py**, go to line 267 and put your game resolution in the bbox parenthesis using this format: (0, 0, x, y). After this, you can play the game with it running on the background. 
 
 When you finish gaming, upload the _frames.npy_ and _training_data.npy_ inside the _Data_ folder to this GitHub or send to me at _ansetti7@gmail.com_. 
 
