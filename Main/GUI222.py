@@ -46,7 +46,8 @@ class Ui_MainWindow(object):
 
         def start_func(self):
             print('start')
-            #main() doesn't work
+            #main() #crashes
+            #os.system("save_data.py") #crashes
 
         def stop_func(self):
             print('stop')
