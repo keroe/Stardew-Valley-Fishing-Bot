@@ -2,7 +2,6 @@ import numpy as np
 from PIL import ImageGrab
 import cv2
 import time
-from directkeys import ReleaseKey, PressKey, C
 from getkeys import key_check
 import os
 
@@ -226,9 +225,9 @@ def main():
 
     c_pressed = 0
 
-    while(True):
+    while True:
 
-        screen =  np.array(ImageGrab.grab(bbox=(0,40, 1280, 760))) # gets what is happening on the screen
+        screen = np.array(ImageGrab.grab(bbox=(0,40, 1280, 760))) # gets what is happening on the screen
 
         #print('Frame took {} ms'.format(np.round((time.time()-last_time)*1000, 2)))
         #print('FPS: ', np.round(1/(time.time()-last_time), 1))
