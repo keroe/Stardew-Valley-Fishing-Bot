@@ -1,0 +1,25 @@
+{% extends 'home/header_footer.html' %}
+
+{% block title %}
+	{% load staticfiles %}
+	<title>SVFB Data</title>
+	<link href="{% static 'css/jumbotron.css' %}" rel="stylesheet">
+	<link href="{% static 'css/blog.css' %}" rel="stylesheet">
+{% endblock title %}
+
+{% block body %}
+
+<main role="main">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">How to help?</h1>
+      <p>Play the game with the <i>"save_data.exe"</i> running at the background, but first read the instructions that <strong>SHOULD BE HERE BUT I WILL ADD LATER.</strong> Questions? You can ask me at GitHub or at my email, found on the contact screen, at the bottom of the page.</p>
+      <p><a class="btn btn-primary btn-lg" href="#" role="button">Download it &raquo;</a></p>
+    </div>
+  </div>
+
+</main>
+
+{% endblock body %}

@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^home/', include('home.urls')),
     url(r'^blog/', include('blog.urls')),
+    url(r'^data/', include('data.urls')),
+    url(r'^sign_in/$', auth_views.login, {'template_name': 'sign_in/index.html'}, name='sign_in'),
 
 ]

@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'sign_in',
+    'data',
     'blog',
     'home',
     'django.contrib.admin',
@@ -107,6 +109,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+LOGIN_REDIRECT_URL = '/home'
 
 TIME_ZONE = 'UTC'
 
