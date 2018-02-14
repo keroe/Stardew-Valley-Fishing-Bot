@@ -26,16 +26,16 @@
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li {% if request.path == '/home/' %} class="nav-item active" {% endif %}>
+          <li {% if request.path == '/home/' or request.path == '/home' %} class="nav-item active" {% endif %}>
             <a class="nav-link" href="/home">Home</a>
           </li>
-          <li {% if request.path == '/blog/' %} class="nav-item active" {% endif %}>
+          <li {% if request.path == '/blog/' or request.path == '/blog' %} class="nav-item active" {% endif %}>
             <a class="nav-link" href="/blog">Blog</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="https://github.com/Setti7/Stardew-Valley-Fishing-Bot/tree/master">GitHub</a>
           </li>
-          <li {% if request.path == "/data/" %} class="nav-item active" {% endif %}>
+          <li {% if request.path == "/data/" or request.path == "/data" %} class="nav-item active" {% endif %}>
             <a class="nav-link" href="https://github.com/Setti7/Stardew-Valley-Fishing-Bot/releases">Downloads</a>
           </li>
           <li class="nav-item dropdown">
