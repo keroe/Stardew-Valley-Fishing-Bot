@@ -90,9 +90,9 @@ class Ui_MainWindow(object):
                             file_path = os.path.join(data_folder_path, file)
                             print(file, ' removed')
                             os.remove(file_path)
-                        
+
                         QtGui.QMessageBox.information(MainWindow, "Success", 'All of your data was deleted...')
-                    
+
                     else:
 
                         del frames[-1]
@@ -106,7 +106,7 @@ class Ui_MainWindow(object):
                         string = 'Last data was removed successfully!\n\n\tScore before deletion:\t' + str(before_score) + '\n\tYour score now:\t' + str(after_score)
                         print(string)
                         QtGui.QMessageBox.information(MainWindow, "Success", string)
-                    
+
                 except Exception as e:
                     print(e)
                     QtGui.QMessageBox.information(MainWindow, "Oops!", "Could not delete the Data")
@@ -144,7 +144,7 @@ class Ui_MainWindow(object):
         self.start.setObjectName(_fromUtf8("start"))
 
         self.start.clicked.connect(start_func)
-        
+
 
         self.stop = QtGui.QPushButton(self.centralwidget)
         self.stop.setGeometry(QtCore.QRect(150, 10, 90, 25))
@@ -182,7 +182,7 @@ class Ui_MainWindow(object):
 
         self.gitHub.clicked.connect(gitHub_func)
 
-        
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 250, 21))
@@ -245,4 +245,3 @@ if __name__ == "__main__":
     ui.setupUi(MainWindow)
     MainWindow.show()
     sys.exit(app.exec_())
-

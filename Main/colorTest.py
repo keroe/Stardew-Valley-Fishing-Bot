@@ -38,7 +38,7 @@ threshold = 0.2
 
 res = cv2.matchTemplate(test2R, dilation1, cv2.TM_CCOEFF_NORMED)
 
-loc = np.where( res >= threshold) 
+loc = np.where( res >= threshold)
 for pt in zip(*loc[::-1]):  # This all is basically the same as trying to find the exc_point, but it also saves the fish center point
     fish_top = pt[1]
     fish_bot = pt[1] + 10

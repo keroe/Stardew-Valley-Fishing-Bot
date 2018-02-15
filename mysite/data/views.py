@@ -19,9 +19,11 @@ def model_form_upload(request):
         form = UserDataForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            
+
     else:
         form = UserDataForm()
+
     return render(request, 'data/ranking_index.html', {
-        'form': form
+        'form': form,
+        'user': request.user
     })
