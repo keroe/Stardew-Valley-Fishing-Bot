@@ -1,0 +1,28 @@
+{% extends 'home/header_footer.html' %}
+
+{% block title %}
+  {% load staticfiles %}
+  <title>SVFB Download</title>
+  <link href="{% static 'css/jumbotron.css' %}" rel="stylesheet">
+  <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+{% endblock title %}
+
+{% block body %}
+
+<main role="main">
+
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Thanks for helping me!</h1>
+      <p>Please upload your data on the form below (be sure to be logged in)!</p>
+      <p>{{message}}</p>
+      {% include 'data/file.html' %}
+    </div>
+  </div>
+
+  
+
+</main>
+
+{% endblock body %}

@@ -11,19 +11,25 @@ def data(request):
 def download(request):
 	return render(request, 'data/download_index.html')
 
-def ranking(request):
-	return render(request, 'data/ranking_index.html')
-
-def model_form_upload(request):
+def upload(request):
+    message = ''
     if request.method == 'POST':
         form = UserDataForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            message = 'File submitted succesfully. Thank you :)'
+            
+        else:
+            message = "Your file was not submitted, maybe you are not logged in or your training data is unvalid."
 
     else:
         form = UserDataForm()
 
-    return render(request, 'data/ranking_index.html', {
+    return render(request, 'data/upload_index.html', {
         'form': form,
-        'user': request.user
+        'user': request.user,
+        'message': message
     })
+
+def ranking(request):
+	return render(request, 'data/ranking_index.html')
