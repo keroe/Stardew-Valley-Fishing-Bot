@@ -16,12 +16,21 @@
     <div class="container">
       <h1 class="display-3">Thanks for helping me!</h1>
       <p>Please upload your data on the form below (be sure to be logged in)!</p>
-      <p>{{message}}</p>
+
+      {% if submitted == 'True' %}
+        <script>
+          alert("File submitted succesfully. Thank you :)");
+        </script>
+      {% elif submitted == 'False' %}
+        <script>
+          alert("Your file was not submitted, maybe you are not logged in or your training data is unvalid.");
+        </script>
+
+      {% endif %}
+
       {% include 'data/file.html' %}
     </div>
   </div>
-
-  
 
 </main>
 

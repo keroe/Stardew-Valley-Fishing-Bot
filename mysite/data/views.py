@@ -12,15 +12,15 @@ def download(request):
 	return render(request, 'data/download_index.html')
 
 def upload(request):
-    message = ''
+    submitted = ''
     if request.method == 'POST':
         form = UserDataForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            message = 'File submitted succesfully. Thank you :)'
+            submitted = 'True' #'File submitted succesfully. Thank you :)'
             
         else:
-            message = "Your file was not submitted, maybe you are not logged in or your training data is unvalid."
+            submitted = 'False' #"Your file was not submitted, maybe you are not logged in or your training data is unvalid."
 
     else:
         form = UserDataForm()
@@ -28,7 +28,7 @@ def upload(request):
     return render(request, 'data/upload_index.html', {
         'form': form,
         'user': request.user,
-        'message': message
+        'submitted': submitted
     })
 
 def ranking(request):
