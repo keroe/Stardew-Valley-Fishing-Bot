@@ -8,8 +8,7 @@ def user_directory_path(instance, filename):
 class UserData(models.Model):
 	username = models.CharField(max_length=40)
 	file = models.FileField(upload_to=user_directory_path)
-	score = models.IntegerField(default=0)#  Acho desnecessario pq len(data) já é o score
-	#score = file.read()
+	score = models.IntegerField(default=0)
 	uploaded_at = models.DateTimeField(auto_now_add=True)
 
 

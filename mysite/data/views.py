@@ -13,7 +13,6 @@ def data(request):
 def upload(request):
     submitted = ''
     file = ""
-    score = None
     if request.method == 'POST':
         form = UserDataForm(request.POST, request.FILES)
         file = request.FILES['file']
@@ -41,7 +40,6 @@ def upload(request):
         'user': request.user,
         'submitted': submitted,
         'file': file,
-        'score': score
     })
 
 def ranking(request):
