@@ -91,12 +91,12 @@ class Ui_MainWindow(object):
                             print(file, ' removed')
                             os.remove(file_path)
 
-                        QtGui.QMessageBox.information(MainWindow, "Success", 'All of your data was deleted...')
+                        QtGui.QMessageBox.information(MainWindow, "Success", 'Your last data was deleted...')
 
                     else:
 
-                        del frames[-1]
                         del training_data[-frames[-1]:]
+                        del frames[-1]
 
                         np.save(file_name, training_data)
                         np.save(frames_file, frames)
