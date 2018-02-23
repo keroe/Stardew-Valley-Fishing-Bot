@@ -39,7 +39,6 @@ def upload(request):
         'form': form,
         'user': request.user,
         'submitted': submitted,
-        'file': file,
     })
 
 def ranking(request):
