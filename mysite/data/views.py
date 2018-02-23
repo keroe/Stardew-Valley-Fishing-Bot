@@ -8,14 +8,13 @@ from data.forms import UserDataForm
 def data(request):
 	return render(request, 'data/data_index.html')
 
-def download(request):
-	return render(request, 'data/download_index.html')
-
 def upload(request):
     submitted = ''
+    file = None
     if request.method == 'POST':
         form = UserDataForm(request.POST, request.FILES)
-        if form.is_valid():
+        file = request.FILES['file']
+        if form.is_valid() and (file.name == 'training_data.npy') and (file.size > 10 ):
             form.save()
             submitted = 'True' #'File submitted succesfully. Thank you :)'
             
@@ -28,7 +27,8 @@ def upload(request):
     return render(request, 'data/upload_index.html', {
         'form': form,
         'user': request.user,
-        'submitted': submitted
+        'submitted': submitted,
+        'file': file
     })
 
 def ranking(request):
