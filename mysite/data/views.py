@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.db.models import Sum
 
 from data.models import UserData
 from data.forms import UserDataForm
@@ -12,7 +13,7 @@ def data(request):
 
 def upload(request):
     submitted = ''
-    file = ""
+    debug = ''
     if request.method == 'POST':
         form = UserDataForm(request.POST, request.FILES)
         file = request.FILES['file']
@@ -22,9 +23,12 @@ def upload(request):
             form.save()
 
             last_row = UserData.objects.latest('id')
-            
             last_row.score = len(file)
             last_row.save()
+
+            #total_frames = UserData.objects.aggregate(Sum('score'))
+            total_score = UserData.objects.values('username').annotate('sum__points'=Sum('score'))
+            debug = total_score
 
             submitted = 'True'
              #'File submitted succesfully. Thank you :)'
@@ -39,6 +43,7 @@ def upload(request):
         'form': form,
         'user': request.user,
         'submitted': submitted,
+        'debug': debug
     })
 
 def ranking(request):
