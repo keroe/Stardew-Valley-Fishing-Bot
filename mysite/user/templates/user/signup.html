@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% load staticfiles %}
+    <link rel="icon" href="{% static 'img/logo.png' %}">
+
+    <title>Signing up</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/floating-labels.css' %}" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <form class = 'form-signin' method="post" action="{% url 'signup' %}">
+      <div class="text-center mb-4">
+        <img class="mb-4" src="{% static 'img/logo.png' %}" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Create an account</h1>
+
+        <p>
+        There isn't a "remeber me" button because I'm lazy.{% if form.errors %} You messed something up. Check if your username/password is valid. {% endif %}
+        </p>
+      </div>
+
+      <table>
+        {% csrf_token %}
+        <tr>
+          <div class="form-label-group">
+            {% csrf_token %}
+            {% for field in form %}
+              <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                  <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                  <p style="color: red">{{ error }}</p>
+                {% endfor %}
+              </p>
+            {% endfor %}
+            </td>
+          </div>
+        </tr>
+
+      </table>
+
+      <div class="checkbox mb-3">
+        <label>
+        </label>
+      </div>
+
+      <button class="btn btn-lg btn-primary btn-block" type="submit" value="signup">Sign up</button>
+      <input type="hidden" name="next" value="{{ next }}" />
+      <p class="mt-5 mb-3 text-muted text-center">&copy; 2017-2018</p>
+
+    </form>
+  </body>
+</html>
