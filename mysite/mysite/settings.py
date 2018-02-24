@@ -120,6 +120,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 USE_I18N = True
 
+#DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
+
 USE_L10N = True
 
 USE_TZ = True
